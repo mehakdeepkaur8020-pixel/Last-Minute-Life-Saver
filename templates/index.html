@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Last-Minute Life Saver</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ============ MOBILE TOP BAR ============ -->
+  <header class="mobile-topbar">
+    <button id="menuToggle" class="icon-btn" aria-label="Open menu">☰</button>
+    <div class="brand">🛟 Last-Minute Life Saver</div>
+    <button id="micToggleMobile" class="icon-btn" aria-label="Voice input">🎤</button>
+  </header>
+
+  <div class="app-shell">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand brand--sidebar">🛟 Last-Minute<br/>Life Saver</div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-section="dashboard">
+          <span class="nav-icon">📊</span> Dashboard
+        </button>
+        <button class="nav-item" data-section="tasks">
+          <span class="nav-icon">✅</span> Tasks
+        </button>
+        <button class="nav-item" data-section="schedule">
+          <span class="nav-icon">🗓️</span> AI Schedule
+        </button>
+        <button class="nav-item" data-section="recommend">
+          <span class="nav-icon">💡</span> Recommendations
+        </button>
+        <button class="nav-item" data-section="analytics">
+          <span class="nav-icon">📈</span> Analytics
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>Powered by Gemini AI</p>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="main-content">
+
+      <!-- Top alert banner for urgent deadlines -->
+      <div id="alertBanner" class="alert-banner hidden"></div>
+
+      <!-- ===== DASHBOARD SECTION ===== -->
+      <section class="page-section active" id="section-dashboard">
+        <div class="section-header">
+          <h1>Dashboard</h1>
+          <button class="btn btn-primary" id="openAddTaskBtn">+ Add Task</button>
+        </div>
+
+        <div class="cards-grid">
+          <div class="stat-card stat-card--total">
+            <div class="stat-icon">📋</div>
+            <div>
+              <div class="stat-value" id="statTotal">0</div>
+              <div class="stat-label">Total Tasks</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--pending">
+            <div class="stat-icon">⏳</div>
+            <div>
+              <div class="stat-value" id="statPending">0</div>
+              <div class="stat-label">Pending</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--complete">
+            <div class="stat-icon">🎉</div>
+            <div>
+              <div class="stat-value" id="statCompleted">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--score">
+            <div class="stat-icon">🚀</div>
+            <div>
+              <div class="stat-value" id="statProductivity">0%</div>
+              <div class="stat-label">Productivity</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Upcoming Deadlines</h2>
+            <button class="btn btn-outline" id="prioritizeBtn">✨ AI Prioritize</button>
+          </div>
+          <div id="upcomingList" class="task-list"></div>
+        </div>
+      </section>
+
+      <!-- ===== TASKS SECTION ===== -->
+      <section class="page-section" id="section-tasks">
+        <div class="section-header">
+          <h1>All Tasks</h1>
+          <div class="header-actions">
+            <button class="btn btn-outline" id="micToggleDesktop">🎤 Voice Add</button>
+            <button class="btn btn-primary" id="openAddTaskBtn2">+ Add Task</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <input type="text" id="searchInput" placeholder="Search tasks..." class="search-input" />
+          <select id="filterStatus" class="select-input">
+            <option value="all">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Complete">Complete</option>
+          </select>
+          <select id="filterPriority" class="select-input">
+            <option value="all">All Priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="Unranked">Unranked</option>
+          </select>
+        </div>
+
+        <div id="allTasksList" class="task-list task-list--full"></div>
+      </section>
+
+      <!-- ===== SCHEDULE SECTION ===== -->
+      <section class="page-section" id="section-schedule">
+        <div class="section-header">
+          <h1>AI Schedule Generator</h1>
+          <button class="btn btn-primary" id="generateScheduleBtn">🗓️ Generate Schedule</button>
+        </div>
+        <p class="section-subtitle">Gemini builds a realistic timetable for the rest of today based on your pending tasks.</p>
+        <div id="scheduleResults" class="schedule-grid"></div>
+      </section>
+
+      <!-- ===== RECOMMENDATIONS SECTION ===== -->
+      <section class="page-section" id="section-recommend">
+        <div class="section-header">
+          <h1>AI Recommendations</h1>
+          <button class="btn btn-primary" id="generateRecommendBtn">💡 Get Recommendations</button>
+        </div>
+        <p class="section-subtitle">Gemini analyzes your workload and tells you what to do first.</p>
+        <div id="recommendSummary" class="recommend-summary hidden"></div>
+        <div id="recommendResults" class="recommend-grid"></div>
+      </section>
+
+      <!-- ===== ANALYTICS SECTION ===== -->
+      <section class="page-section" id="section-analytics">
+        <div class="section-header">
+          <h1>Productivity Analytics</h1>
+        </div>
+        <div class="cards-grid">
+          <div class="stat-card stat-card--total">
+            <div class="stat-icon">📋</div>
+            <div>
+              <div class="stat-value" id="statTotal2">0</div>
+              <div class="stat-label">Total Tasks</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--pending">
+            <div class="stat-icon">⏳</div>
+            <div>
+              <div class="stat-value" id="statPending2">0</div>
+              <div class="stat-label">Pending</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--complete">
+            <div class="stat-icon">🎉</div>
+            <div>
+              <div class="stat-value" id="statCompleted2">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--score">
+            <div class="stat-icon">🚀</div>
+            <div>
+              <div class="stat-value" id="statProductivity2">0%</div>
+              <div class="stat-label">Productivity</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Progress Bar</h2>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ============ ADD/EDIT TASK MODAL ============ -->
+  <div class="modal-overlay hidden" id="taskModalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Task</h2>
+        <button class="icon-btn" id="closeModalBtn">✕</button>
+      </div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId" />
+        <div class="form-group">
+          <label for="taskTitle">Title *</label>
+          <input type="text" id="taskTitle" required placeholder="e.g. DBMS Assignment" />
+        </div>
+        <div class="form-group">
+          <label for="taskDescription">Description</label>
+          <textarea id="taskDescription" rows="3" placeholder="Optional details..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskDeadline">Deadline *</label>
+            <input type="datetime-local" id="taskDeadline" required />
+          </div>
+          <div class="form-group">
+            <label for="taskCategory">Category</label>
+            <select id="taskCategory">
+              <option>Assignment</option>
+              <option>Exam</option>
+              <option>Meeting</option>
+              <option>Interview</option>
+              <option>Bill Payment</option>
+              <option>General</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="cancelModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveTaskBtn">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ RESCUE MODE MODAL ============ -->
+  <div class="modal-overlay hidden" id="rescueModalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>🚨 Auto Rescue Mode</h2>
+        <button class="icon-btn" id="closeRescueModalBtn">✕</button>
+      </div>
+      <div id="rescueModalContent" class="rescue-content">
+        <div class="loader"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST CONTAINER ============ -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ============ GLOBAL LOADING OVERLAY ============ -->
+  <div id="globalLoader" class="global-loader hidden">
+    <div class="loader"></div>
+    <p id="globalLoaderText">Working on it...</p>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
