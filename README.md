@@ -52,38 +52,33 @@ project/
 
 ---
 
-## 🚀 Local Setup
 
-### 1. Clone / unzip the project and enter the folder
-```bash
-cd project
-```
 
-### 2. Create a virtual environment (recommended)
+### 1. Create a virtual environment (recommended)
 ```bash
 python3 -m venv venv
 source venv/bin/activate        # On Windows: venv\Scripts\activate
 ```
 
-### 3. Install dependencies
+### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set up your Gemini API key
+### 3. Set up your Gemini API key
 1. Get a free key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 2. Open `.env` and replace the placeholder:
    ```
-   GEMINI_API_KEY=your_actual_key_here
+   GEMINI_API_KEY=MY_actual_key
    ```
 
-### 5. Run the app
+### 4. Run the app
 ```bash
 python app.py
 ```
 The app will start on **http://localhost:5000**. The SQLite database (`database.db`) is created automatically on first run.
 
-### 6. Open it in your browser
+### 5. Open it in your browser
 Go to `http://localhost:5000` — add a few tasks, then try **AI Prioritize**, **Generate Schedule**, **Get Recommendations**, and **🚨 Rescue** on a task due soon.
 
 > 🎤 Voice input requires a Chromium-based browser (Chrome/Edge) since Web Speech API support varies across browsers.
@@ -246,4 +241,4 @@ All four routes use structured JSON prompts and the app parses Gemini's structur
 ---
 
 ## 📄 License
-This project was generated as a hackathon starter kit — feel free to use, modify, and extend it.
+This project was made for hackathon starter kit — feel free to use it.
